@@ -1,10 +1,9 @@
-name: "Chromatic"
+name: 'Chromatic'
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
 
 jobs:
   chromatic-deployment:
@@ -12,9 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # ensures full git history for Chromatic
-      - name: Install dependencies
-        run: npm install
+          fetch-depth: 0   # <-- important fix!
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
